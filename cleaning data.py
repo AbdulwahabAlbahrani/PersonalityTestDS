@@ -21,6 +21,9 @@ for i in range(50):
 posts_data = pd.concat(j,axis=0,ignore_index=True)
 
 #%%
+
+
+#%%
 posts_data.drop('Unnamed: 0',1,inplace=True)
 #%%
 posts_data.info()
@@ -29,7 +32,8 @@ posts_data.info()
 type_value_counts = posts_data['Type'].value_counts()
 type_value_counts
 #%%
-
+posts_data.dropna(inplace=True)
+#%%
 # new_type_value_counts = pd.DataFrame({'index':type_value_counts.index,'value':type_value_counts.values})
 fig = px.bar(type_value_counts)
 fig.show()
@@ -42,6 +46,8 @@ fig.show()
 
 posts_data.head(10)
 # %%
+posts_data.isnull().value_counts()
+#%%
 posts_data['body'][1183636]
 # %%
 # removing \n from every post pody
@@ -55,6 +61,19 @@ posts_data['body'] = posts_data['body'].str.replace(r'\(.*\)',"")
 posts_data['body'] = posts_data['body'].str.replace(r'\[.*\]',"")
 
 #%%
+
+posts_data['body'] = posts_data['body'].str.replace('&gt;',"")
+posts_data['body'] = posts_data['body'].str.replace("I\'m;","I'm")
+posts_data['body'] = posts_data['body'].str.replace("it\'s;","it's")
+posts_data['body'] = posts_data['body'].str.replace("they\'re","they're")
+
+posts_data['body'] = posts_data['body'].str.replace('"',"")
+posts_data['body'] = posts_data['body'].str.replace("'","")
+
+posts_data['body'] = posts_data['body'].str.replace(r"[,.;@#?!&$]+\ *"," ")
+
+posts_data['body'] = posts_data['body'].str.replace(r"<br/>|<br />"," ")
+
 
 # %%
 ## exporting the cleaned dataset
