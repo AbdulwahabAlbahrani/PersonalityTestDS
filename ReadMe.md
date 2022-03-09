@@ -241,12 +241,12 @@ because of the of the size of the dataset, I divided the dataset CSV file into 5
 ---
 
 ![[Number split for indecators.png]]
-
+(https://github.com/AbdulwahabAlbahrani/PersonalityTestDS/blob/master/Number of personality types (2).PNG)
 ---
 
 
 ![[Number of personality types (2).png]]
-
+(https://github.com/AbdulwahabAlbahrani/PersonalityTestDS/blob/master/Number%20split%20for%20indecators.PNG)
 ---
 
 ### Data cleaning
