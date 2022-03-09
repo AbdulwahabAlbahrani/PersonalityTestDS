@@ -14,6 +14,8 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras import layers
 from tensorflow.keras import models
 #%%
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 #%%
 # importing the data without links in the posts, at least hopefully
@@ -30,7 +32,7 @@ posts_dataset =pd.concat(files,axis=0,ignore_index=True)
 #%%
 posts_dataset.info()
 #%%
-posts_dataset.drop('Unnamed: 0',1,inplace=True)
+# posts_dataset.drop('Unnamed: 0',1,inplace=True)
 
 #%%
 posts_dataset.info()
@@ -89,15 +91,16 @@ splited_texts[649]
 # %%
 posts_dataset.body.isna().value_counts()
 # %%
-top_n_words = 10000
+top_n_words = 200000
 
-tokenizer = Tokenizer(num_words = top_n_words)
+tokenizer = Tokenizer(num_words = top_n_words, oov_token="<00V>")
 tokenizer.fit_on_texts(texts)
 
 #%%
 list(tokenizer.word_index.items())[:6]
 # %%
 sequences = tokenizer.texts_to_sequences(texts)
+# sequences = pad_sequences(sequences)
 # The vectorized first review
 sequences[0]
 # %%
@@ -129,4 +132,32 @@ model.add(layers.Embedding(input_dim=top_n_words, input_length=max_len, output_d
 model.add(layers.Flatten())
 model.add(layers.Dense(units=1, activation='sigmoid'))
 model.summary()
+# %%
+
+# opt = adam  rmsprop
+
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics='accuracy')
+history = model.fit(
+    x_train,
+    y_train,
+    epochs=10,
+    batch_size=32,
+    validation_split=0.2
+)
+
+
+
+
+# %%
+results = pd.DataFrame(history.history)
+
+# plot loss
+results[['val_loss', 'loss']].plot(figsize=(8, 5))
+# %%
+
+
+# plot accuracy
+results[['val_accuracy', 'accuracy']].plot(figsize=(8, 5))
+
+
 # %%
